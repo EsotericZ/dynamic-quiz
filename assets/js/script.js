@@ -1,6 +1,7 @@
 function startQuiz() {
     document.getElementById("tagb").hidden = true;
     quiz();
+    timer();
 }
 
 let tag = document.createElement("button");
@@ -47,10 +48,24 @@ let questions = [
 
 let current = 0;
 let redo = 0;
+let timeLeft = document.createElement('h3');
+let secondsLeft = 60;
+timeLeft.textContent = secondsLeft;
 
+function timer() {
+    let timerInterval = setInterval(function() {
+        secondsLeft--;
+        timeLeft.textContent = secondsLeft;
 
+        if (secondsLeft === 0) {
+            clearInterval(timerInterval);
+        }
+    }, 1000);
+}
 
-
+function stopTimer() {
+    clearInterval(timerInterval);
+}
 
 function quiz() {
     if (redo !== 0) {
@@ -60,13 +75,14 @@ function quiz() {
         document.getElementById("ans3b").hidden = false;
         document.getElementById("ans4b").hidden = false;   
     }
-    // solution.innerHTML = "";
+
     question.textContent = questions[current].question;
     ans1.innerHTML = questions[current].answer[0].ans;
     ans2.innerHTML = questions[current].answer[1].ans;
     ans3.innerHTML = questions[current].answer[2].ans;
     ans4.innerHTML = questions[current].answer[3].ans;
 
+    document.body.appendChild(timeLeft);
     document.body.appendChild(question);
     document.body.appendChild(ans1);
     document.body.appendChild(ans2);
@@ -130,6 +146,11 @@ function scores() {
     document.getElementById("ans2b").hidden = true;
     document.getElementById("ans3b").hidden = true;
     document.getElementById("ans4b").hidden = true;    
+
+    // document.getElementById("timeLeft").hidden = true;
+    let timeScore = timeLeft.innerText;
+    console.log(timeScore)
+    stopTimer();
 
     ques.innerHTML = "Congrats! You Finished the Quiz!"
     document.body.appendChild(hsname);
