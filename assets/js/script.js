@@ -51,18 +51,18 @@ let redo = 0;
 let timeLeft = document.createElement('h3');
 timeLeft.id = "timeLeft";
 let secondsLeft = 60;
-timeLeft.textContent = secondsLeft;
+timeLeft.textContent = secondsLeft.toFixed(1);
 let timerInterval;
 
 function timer() {
     timerInterval = setInterval(function() {
-        secondsLeft--;
-        timeLeft.textContent = secondsLeft;
+        secondsLeft = secondsLeft-0.1;
+        timeLeft.textContent = secondsLeft.toFixed(1);
 
         if (secondsLeft === 0) {
             clearInterval(timerInterval);
         }
-    }, 1000);
+    }, 100);
 }
 
 function quiz() {
@@ -172,10 +172,9 @@ function scoreboard() {
 }
 
 function restart() {
-
     current = 0;
     secondsLeft = 60;
-    timeLeft.textContent = secondsLeft;
+    timeLeft.textContent = secondsLeft.toFixed(1);
     redo++
     timer()
     quiz()
