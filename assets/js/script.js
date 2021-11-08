@@ -146,7 +146,7 @@ function scores() {
     document.getElementById("ans3b").hidden = true;
     document.getElementById("ans4b").hidden = true;    
 
-    let timeScore = timeLeft.innerText;
+    timeScore = timeLeft.innerText;
     window.clearInterval(timerInterval);
 
     ques.innerHTML = "Congrats! You Finished the Quiz!"
@@ -157,10 +157,32 @@ function scores() {
     hsbtn.addEventListener("click", scoreboard);
 }
 
+
+
+
+let newScore;
+
+function highScores() {
+    if (localStorage.getItem("highScore") === null) {
+        newScore = [{name: "t1", score: timeScore}];
+        localStorage.setItem("highScore", JSON.stringify(newScore));
+    } else {
+        let a = [];
+        a = JSON.parse(localStorage.getItem("highScore")) || [];
+        newScore = {name: "Bob", score: timeScore};
+        a.push(newScore);
+        localStorage.setItem("highScore", JSON.stringify(a));
+    }
+}
+
+
+
+
 function scoreboard() {
     if (redo !== 0) {
         document.getElementById("rstart").hidden = false;
     }
+    highScores()
     document.getElementById("hsname").hidden = true;
     document.getElementById("hsbtn").hidden = true;
     document.getElementById("timeLeft").hidden = true;
