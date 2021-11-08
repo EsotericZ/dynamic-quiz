@@ -49,11 +49,13 @@ let questions = [
 let current = 0;
 let redo = 0;
 let timeLeft = document.createElement('h3');
+timeLeft.id = "timeLeft";
 let secondsLeft = 60;
 timeLeft.textContent = secondsLeft;
+let timerInterval;
 
 function timer() {
-    let timerInterval = setInterval(function() {
+    timerInterval = setInterval(function() {
         secondsLeft--;
         timeLeft.textContent = secondsLeft;
 
@@ -63,13 +65,10 @@ function timer() {
     }, 1000);
 }
 
-function stopTimer() {
-    clearInterval(timerInterval);
-}
-
 function quiz() {
     if (redo !== 0) {
         document.getElementById("rstart").hidden = true;
+        document.getElementById("timeLeft").hidden = false;
         document.getElementById("ans1b").hidden = false;
         document.getElementById("ans2b").hidden = false;
         document.getElementById("ans3b").hidden = false;
@@ -147,10 +146,8 @@ function scores() {
     document.getElementById("ans3b").hidden = true;
     document.getElementById("ans4b").hidden = true;    
 
-    // document.getElementById("timeLeft").hidden = true;
     let timeScore = timeLeft.innerText;
-    console.log(timeScore)
-    stopTimer();
+    window.clearInterval(timerInterval);
 
     ques.innerHTML = "Congrats! You Finished the Quiz!"
     document.body.appendChild(hsname);
@@ -166,6 +163,7 @@ function scoreboard() {
     }
     document.getElementById("hsname").hidden = true;
     document.getElementById("hsbtn").hidden = true;
+    document.getElementById("timeLeft").hidden = true;
     
     ques.innerHTML = "High Scores"
     document.body.appendChild(rstart);
@@ -174,7 +172,11 @@ function scoreboard() {
 }
 
 function restart() {
+
     current = 0;
+    secondsLeft = 60;
+    timeLeft.textContent = secondsLeft;
     redo++
+    timer()
     quiz()
 }
