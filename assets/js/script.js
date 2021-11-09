@@ -30,20 +30,25 @@ rstart.id = "rstart";
 
 let questions = [
     {question: "This is the first question",
-    answer: [{ans: "answer 1-01", tf: true}, 
+    answer: [{ans: "answer 1-01", tf: 'true1'}, 
         {ans: "answer 1-02", tf: false}, 
         {ans: "answer 1-03", tf: false}, 
         {ans: "answer 1-04", tf: false}]},
     {question: "This is the second question",
-    answer: [{ans: "answer 2-01", tf: false}, 
-        {ans: "answer 2-02", tf: true}, 
+    answer: [{ans: "answer 2-01", tf: 'true2'}, 
+        {ans: "answer 2-02", tf: false}, 
         {ans: "answer 2-03", tf: false}, 
         {ans: "answer 2-04", tf: false}]},
     {question: "This is the third question",
-    answer: [{ans: "answer 3-01", tf: false}, 
+    answer: [{ans: "answer 3-01", tf: 'true3'}, 
         {ans: "answer 3-02", tf: false}, 
         {ans: "answer 3-03", tf: true}, 
-        {ans: "answer 3-04", tf: false}]}
+        {ans: "answer 3-04", tf: false}]},
+    {question: "This is the fourth question",
+    answer: [{ans: "answer 4-01", tf: 'true4'}, 
+        {ans: "answer 4-02", tf: false}, 
+        {ans: "answer 4-03", tf: true}, 
+        {ans: "answer 4-04", tf: false}]}
 ];
 
 let current = 0;
@@ -56,7 +61,7 @@ let timerInterval;
 
 function timer() {
     timerInterval = setInterval(function() {
-        secondsLeft = secondsLeft-0.1;
+        secondsLeft -= 0.1;
         timeLeft.textContent = secondsLeft.toFixed(1);
 
         if (secondsLeft === 0) {
@@ -66,6 +71,7 @@ function timer() {
 }
 
 function quiz() {
+    console.log("START", current)
     if (redo !== 0) {
         document.getElementById("rstart").hidden = true;
         document.getElementById("timeLeft").hidden = false;
@@ -80,7 +86,7 @@ function quiz() {
     ans2.innerHTML = questions[current].answer[1].ans;
     ans3.innerHTML = questions[current].answer[2].ans;
     ans4.innerHTML = questions[current].answer[3].ans;
-
+    
     document.body.appendChild(timeLeft);
     document.body.appendChild(question);
     document.body.appendChild(ans1);
@@ -94,12 +100,17 @@ function quiz() {
     ans3.id = "ans3b";
     ans4.id = "ans4b";
 
+    console.log("current: ", current);
     ans1.addEventListener("click", function() { 
+        console.log(questions[current].answer[0].tf)
         if (questions[current].answer[0].tf === true) {
-            solution.innerHTML = "You Got It Right!"
+            solution.innerHTML = "You Got It Right!";
+            return;
         } else {
-            solution.innerHTML = "Sorry, You Got It Wrong!"
+            solution.innerHTML = "Sorry, You Got It Wrong!";
+            return;
         }
+    return;
     })
     ans2.addEventListener("click", function() { 
         if (questions[current].answer[1].tf === true) {
@@ -107,6 +118,7 @@ function quiz() {
         } else {
             solution.innerHTML = "Sorry, You Got It Wrong!"
         }
+    return;
     })
     ans3.addEventListener("click", function() { 
         if (questions[current].answer[2].tf === true) {
@@ -114,6 +126,7 @@ function quiz() {
         } else {
             solution.innerHTML = "Sorry, You Got It Wrong!"
         }
+    return;
     })
     ans4.addEventListener("click", function() { 
         if (questions[current].answer[3].tf === true) {
@@ -121,18 +134,22 @@ function quiz() {
         } else {
             solution.innerHTML = "Sorry, You Got It Wrong!"
         }
+    return;
     })
-
+    
     ans1.addEventListener("click", next);
+    return;
 }
 
 function next(){
     current++
+    console.log("next +", current)
     if (current < questions.length) {
         quiz()
     } else {
         scores()
     }
+    return;
 }
 
 function scores() {
