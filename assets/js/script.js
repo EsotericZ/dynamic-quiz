@@ -130,6 +130,8 @@ function highScores() {
 
 let score = document.createElement('button');
 let allScores;
+let hs;
+let hsList = [];
 
 function scoreboard() {
     userName = hsname.value;
@@ -147,15 +149,7 @@ function scoreboard() {
     rstart.addEventListener("click", restart)
     document.body.appendChild(score);
     score.innerHTML = "High Scores"
-    score.addEventListener("click", function() {
-        // allScores = getScores();
-        let hs = JSON.parse(localStorage.getItem("highScore") || []);
-        hs.sort((a, b) => b.score - a.score);
-        for (let i = 0; i < hs.length; i++) {
-            console.log(hs[i])
-        }
-        // return location.href = "highscore.html";
-    })
+    score.addEventListener("click", getScores)
 }
 
 function restart() {
@@ -168,12 +162,18 @@ function restart() {
 }
 
 function getScores() {
-    // let hs = JSON.parse(localStorage.getItem("highScore"));
-    console.log('success')
-    // console.log(hs)
-    // for  (let i = 0; i < hs.length; i++) {
-    //     console.log(i)
-    // }
+    hs = JSON.parse(localStorage.getItem("highScore") || []);
+    hs.sort((a, b) => b.score - a.score);
+    let nscore;
+    for (let i = 0; i < 10; i++) {
+        nscore = hs[i].name+":   "+hs[i].score;
+        hsList.push(nscore);
+    }
+    hsList.forEach(list => {
+        let h4 = document.createElement('h4');
+        h4.innerHTML = list;
+        document.body.appendChild(h4);
+    })
 }
 
 
