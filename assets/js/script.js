@@ -6,10 +6,6 @@ tag.id = "tagb";
 
 
 let que = document.createElement("h1");
-// let ans1 = document.createElement("button");
-// let ans2 = document.createElement("button");
-// let ans3 = document.createElement("button");
-// let ans4 = document.createElement("button");
 let solution = document.createElement("h2");
 let hsname = document.createElement("input");
 hsname.type = "text";
@@ -61,13 +57,15 @@ function timer() {
 }
 
 function quiz() {
-    // if (current !== 0) {
-    //     document.body.removeChild(button);
-    // }
+    if (redo !== 0) {
+        document.getElementById("rstart").hidden = true;
+        document.getElementById("timeLeft").hidden = false;
+    }
     quizQuestion(questions[current])
 }
 
 function quizQuestion(question) {
+    document.body.appendChild(timeLeft)
     que.innerHTML = question.question;
     document.body.appendChild(que);
     question.answer.forEach(answer => {
@@ -88,103 +86,23 @@ function chooseAnswer(e) {
         let num = document.getElementsByClassName("button");
         document.body.removeChild(num[0]);
     }
-    let selectedButton = e.target
-    let correct = selectedButton.dataset.tf
+    let selectedButton = e.target;
+    let correct = selectedButton.dataset.tf;
     if (current < questions.length-1) {
-        current++
+        current++;
         quiz()
     } else {
         scores()
     }
 }
 
-// function quiz() {
-//     console.log("START", current)
-//     if (redo !== 0) {
-//         document.getElementById("rstart").hidden = true;
-//         document.getElementById("timeLeft").hidden = false;
-//         document.getElementById("ans1b").hidden = false;
-//         document.getElementById("ans2b").hidden = false;
-//         document.getElementById("ans3b").hidden = false;
-//         document.getElementById("ans4b").hidden = false;   
-//     }
+let userName;
 
-//     question.textContent = questions[current].question;
-//     ans1.innerHTML = questions[current].answer[0].ans;
-//     ans2.innerHTML = questions[current].answer[1].ans;
-//     ans3.innerHTML = questions[current].answer[2].ans;
-//     ans4.innerHTML = questions[current].answer[3].ans;
-    
-//     document.body.appendChild(timeLeft);
-//     document.body.appendChild(question);
-//     document.body.appendChild(ans1);
-//     document.body.appendChild(ans2);
-//     document.body.appendChild(ans3);
-//     document.body.appendChild(ans4);
-//     document.body.appendChild(solution);
-//     question.id = "ques";
-//     ans1.id = "ans1b";
-//     ans2.id = "ans2b";
-//     ans3.id = "ans3b";
-//     ans4.id = "ans4b";
-
-//     console.log("current: ", current);
-//     ans1.addEventListener("click", function() { 
-//         console.log(questions[current].answer[0].tf)
-//         if (questions[current].answer[0].tf === true) {
-//             solution.innerHTML = "You Got It Right!";
-//         } else {
-//             solution.innerHTML = "Sorry, You Got It Wrong!";
-//         }
-//     })
-//     ans2.addEventListener("click", function() { 
-//         if (questions[current].answer[1].tf === true) {
-//             solution.innerHTML = "You Got It Right!"
-//         } else {
-//             solution.innerHTML = "Sorry, You Got It Wrong!"
-//         }
-//     })
-//     ans3.addEventListener("click", function() { 
-//         if (questions[current].answer[2].tf === true) {
-//             solution.innerHTML = "You Got It Right!"
-//         } else {
-//             solution.innerHTML = "Sorry, You Got It Wrong!"
-//         }
-//     })
-//     ans4.addEventListener("click", function() { 
-//         if (questions[current].answer[3].tf === true) {
-//             solution.innerHTML = "You Got It Right!"
-//         } else {
-//             solution.innerHTML = "Sorry, You Got It Wrong!"
-//         }
-//     })
-    
-//     ans1.addEventListener("click", next);
-//     return;
-// }
-
-// function next(){
-//     current++
-//     console.log("next +", current)
-//     if (current < questions.length) {
-//         quiz()
-//     } else {
-//         scores()
-//     }
-//     return;
-// }
-
-function scores() {
-    // if (redo !== 0) {
-    //     document.getElementById("hsname").hidden = false;
-    //     document.getElementById("hsbtn").hidden = false;   
-    // }
-    // solution.innerHTML = "";
-    // document.getElementById("ans1b").hidden = true;
-    // document.getElementById("ans2b").hidden = true;
-    // document.getElementById("ans3b").hidden = true;
-    // document.getElementById("ans4b").hidden = true;    
-
+function scores() {   
+    if (redo !== 0) {
+        document.getElementById("hsname").hidden = false;
+        document.getElementById("hsbtn").hidden = false;
+    }
     timeScore = timeLeft.innerText;
     window.clearInterval(timerInterval);
 
@@ -193,32 +111,34 @@ function scores() {
     document.body.appendChild(hsbtn);
     hsbtn.innerHTML = "Submit";
 
+
     hsbtn.addEventListener("click", scoreboard);
 }
 
 function highScores() {
     if (localStorage.getItem("highScore") === null) {
-        newScore = [{name: "t1", score: timeScore}];
+        newScore = [{name: userName, score: timeScore}];
         localStorage.setItem("highScore", JSON.stringify(newScore));
     } else {
         let a = [];
         a = JSON.parse(localStorage.getItem("highScore")) || [];
-        newScore = {name: "Bob", score: timeScore};
+        newScore = {name: userName, score: timeScore};
         a.push(newScore);
         localStorage.setItem("highScore", JSON.stringify(a));
     }
 }
 
 function scoreboard() {
+    userName = hsname.value;
+    highScores()
     if (redo !== 0) {
         document.getElementById("rstart").hidden = false;
     }
-    highScores()
     document.getElementById("hsname").hidden = true;
     document.getElementById("hsbtn").hidden = true;
     document.getElementById("timeLeft").hidden = true;
     
-    ques.innerHTML = "High Scores"
+    que.innerHTML = "High Scores"
     document.body.appendChild(rstart);
     rstart.innerHTML = "Try Again"
     rstart.addEventListener("click", restart)
