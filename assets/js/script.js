@@ -128,6 +128,9 @@ function highScores() {
     }
 }
 
+let score = document.createElement('button');
+let allScores;
+
 function scoreboard() {
     userName = hsname.value;
     highScores()
@@ -138,10 +141,21 @@ function scoreboard() {
     document.getElementById("hsbtn").hidden = true;
     document.getElementById("timeLeft").hidden = true;
     
-    que.innerHTML = "High Scores"
+    que.innerHTML = "Congrats! You Finished the Quiz!"
     document.body.appendChild(rstart);
     rstart.innerHTML = "Try Again"
     rstart.addEventListener("click", restart)
+    document.body.appendChild(score);
+    score.innerHTML = "High Scores"
+    score.addEventListener("click", function() {
+        // allScores = getScores();
+        let hs = JSON.parse(localStorage.getItem("highScore") || []);
+        hs.sort((a, b) => b.score - a.score);
+        for (let i = 0; i < hs.length; i++) {
+            console.log(hs[i])
+        }
+        // return location.href = "highscore.html";
+    })
 }
 
 function restart() {
@@ -151,6 +165,15 @@ function restart() {
     redo++
     timer()
     quiz()
+}
+
+function getScores() {
+    // let hs = JSON.parse(localStorage.getItem("highScore"));
+    console.log('success')
+    // console.log(hs)
+    // for  (let i = 0; i < hs.length; i++) {
+    //     console.log(i)
+    // }
 }
 
 
