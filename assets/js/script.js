@@ -26,6 +26,11 @@ timeLeft.textContent = secondsLeft.toFixed(1);
 let timerInterval;
 let newScore;
 
+let score = document.createElement('button');
+let allScores;
+let hs;
+let hsList = [];
+let userName;
 
 
 // START //
@@ -80,14 +85,24 @@ function quizQuestion(question) {
     })
 }
 
-function chooseAnswer(e) {
+function chooseAnswer(chosen) {
     let q = questions[current].answer;
     for (let i = 0; i < q.length; i++) {
         let num = document.getElementsByClassName("button");
         document.body.removeChild(num[0]);
     }
-    let selectedButton = e.target;
+    let selectedButton = chosen.target;
     let correct = selectedButton.dataset.tf;
+    console.log(selectedButton)
+    console.log(correct);
+    if (correct !== 'true') {
+        console.log('false!')
+        secondsLeft -= 10;
+        timeLeft.textContent = secondsLeft.toFixed(1);
+
+        // CHANGE CSS STYLING OF BUTTON IF RIGHT/WRONG
+
+    }
     if (current < questions.length-1) {
         current++;
         quiz()
@@ -95,8 +110,6 @@ function chooseAnswer(e) {
         scores()
     }
 }
-
-let userName;
 
 function scores() {   
     if (redo !== 0) {
@@ -110,8 +123,6 @@ function scores() {
     document.body.appendChild(hsname);
     document.body.appendChild(hsbtn);
     hsbtn.innerHTML = "Submit";
-
-
     hsbtn.addEventListener("click", scoreboard);
 }
 
@@ -127,11 +138,6 @@ function highScores() {
         localStorage.setItem("highScore", JSON.stringify(a));
     }
 }
-
-let score = document.createElement('button');
-let allScores;
-let hs;
-let hsList = [];
 
 function scoreboard() {
     userName = hsname.value;
@@ -165,13 +171,14 @@ function getScores() {
     hs = JSON.parse(localStorage.getItem("highScore") || []);
     hs.sort((a, b) => b.score - a.score);
     let nscore;
-    for (let i = 0; i < 10; i++) {
-        nscore = hs[i].name+":   "+hs[i].score;
+    for (let i = 0; i < hs.length; i++) {
+        nscore = (i+1)+". "+hs[i].name+":   "+hs[i].score;
         hsList.push(nscore);
     }
-    hsList.forEach(list => {
+    hsList.slice(0,5).forEach(list => {
         let h4 = document.createElement('h4');
         h4.innerHTML = list;
+        h4.id = 'h4';
         document.body.appendChild(h4);
     })
 }
@@ -187,17 +194,17 @@ let questions = [
         {ans: "answer 1-03", tf: false}, 
         {ans: "answer 1-04", tf: false}]},
     {question: "This is the second question",
-    answer: [{ans: "answer 2-01", tf: 'true2'}, 
+    answer: [{ans: "answer 2-01", tf: false}, 
         {ans: "answer 2-02", tf: false}, 
         {ans: "answer 2-03", tf: false}, 
         {ans: "answer 2-04", tf: false}]},
     {question: "This is the third question",
-    answer: [{ans: "answer 3-01", tf: 'true3'}, 
+    answer: [{ans: "answer 3-01", tf: true}, 
         {ans: "answer 3-02", tf: false}, 
         {ans: "answer 3-03", tf: true}, 
         {ans: "answer 3-04", tf: false}]},
     {question: "This is the fourth question",
-    answer: [{ans: "answer 4-01", tf: 'true4'}, 
+    answer: [{ans: "answer 4-01", tf: true}, 
         {ans: "answer 4-02", tf: false}, 
         {ans: "answer 4-03", tf: true}, 
         {ans: "answer 4-04", tf: false}]}
