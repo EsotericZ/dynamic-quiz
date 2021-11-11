@@ -1,13 +1,14 @@
 // VARIABLES //
 
-let tag = document.createElement("button");
-tag.innerHTML = "Start!";
-tag.id = "tagb";
+let quizStart = document.createElement("button");
+quizStart.innerHTML = "Start!";
+quizStart.id = "quizStart";
 let sbtn = document.createElement("button");
 sbtn.innerHTML = "High Scores";
 sbtn.id = "sbtn";
 
 let que = document.createElement("h1");
+que.id = "que";
 let solution = document.createElement("h2");
 let hsname = document.createElement("input");
 hsname.type = "text";
@@ -41,9 +42,9 @@ headq.innerHTML = 'Ye Ultimate Teletubbies Quiz'
 // START //
 
 document.body.appendChild(headq);
-document.body.appendChild(tag);
+document.body.appendChild(quizStart);
 document.body.appendChild(sbtn);
-tag.addEventListener("click", startQuiz);
+quizStart.addEventListener("click", startQuiz);
 sbtn.addEventListener("click", getScores);
 
 
@@ -51,8 +52,10 @@ sbtn.addEventListener("click", getScores);
 // FUNCTIONS //
 
 function startQuiz() {
-    document.getElementById("tagb").hidden = true;
-    document.getElementById("sbtn").hidden = true;
+    // document.getElementById("quizStart").hidden = true;
+    quizStart.id = "hidden";
+    sbtn.id = "hidden";
+    // document.getElementById("sbtn").hidden = true;
     current = 0;
     quiz();
     timer();
@@ -60,10 +63,10 @@ function startQuiz() {
 
 function timer() {
     timerInterval = setInterval(function() {
-        secondsLeft -= 0.01;
+        secondsLeft-= 0.01;
         timeLeft.textContent = secondsLeft.toFixed(2);
-
-        if (secondsLeft === 0) {
+        if (secondsLeft.toFixed(0) <= 0) {
+            timeLeft.textContent = "0.00";
             clearInterval(timerInterval);
         }
     }, 10);
