@@ -3,7 +3,9 @@
 let tag = document.createElement("button");
 tag.innerHTML = "Start!";
 tag.id = "tagb";
-
+let sbtn = document.createElement("button");
+sbtn.innerHTML = "High Scores";
+sbtn.id = "sbtn";
 
 let que = document.createElement("h1");
 let solution = document.createElement("h2");
@@ -31,12 +33,18 @@ let allScores;
 let hs;
 let hsList = [];
 let userName;
+let sawHigh = 0;
 
+let headq = document.createElement('header');
+headq.innerHTML = 'Ye Ultimate Teletubbies Quiz'
 
 // START //
 
+document.body.appendChild(headq);
 document.body.appendChild(tag);
+document.body.appendChild(sbtn);
 tag.addEventListener("click", startQuiz);
+sbtn.addEventListener("click", getScores);
 
 
 
@@ -44,7 +52,7 @@ tag.addEventListener("click", startQuiz);
 
 function startQuiz() {
     document.getElementById("tagb").hidden = true;
-    document.body.appendChild(que)
+    document.getElementById("sbtn").hidden = true;
     current = 0;
     quiz();
     timer();
@@ -63,8 +71,13 @@ function timer() {
 
 function quiz() {
     if (redo !== 0) {
+        console.log('restart!')
         document.getElementById("rstart").hidden = true;
+        document.getElementById("score").hidden = true;
         document.getElementById("timeLeft").hidden = false;
+    }
+    if (sawHigh !==0) {
+        clearScores()
     }
     quizQuestion(questions[current])
 }
@@ -144,17 +157,19 @@ function scoreboard() {
     highScores()
     if (redo !== 0) {
         document.getElementById("rstart").hidden = false;
+        document.getElementById("score").hidden = false;
     }
     document.getElementById("hsname").hidden = true;
     document.getElementById("hsbtn").hidden = true;
     document.getElementById("timeLeft").hidden = true;
     
-    que.innerHTML = "Congrats! You Finished the Quiz!"
+    que.innerHTML = "You Have Been Put in the Hall of Fame!"
     document.body.appendChild(rstart);
     rstart.innerHTML = "Try Again"
     rstart.addEventListener("click", restart)
     document.body.appendChild(score);
     score.innerHTML = "High Scores"
+    score.id = 'score';
     score.addEventListener("click", getScores)
 }
 
@@ -168,6 +183,9 @@ function restart() {
 }
 
 function getScores() {
+    que.innerHTML = "Leaderboard!"
+    document.getElementById("sbtn").hidden = true;
+    document.getElementById("score").hidden = true;
     hs = JSON.parse(localStorage.getItem("highScore") || []);
     hs.sort((a, b) => b.score - a.score);
     let nscore;
@@ -178,9 +196,17 @@ function getScores() {
     hsList.slice(0,5).forEach(list => {
         let h4 = document.createElement('h4');
         h4.innerHTML = list;
-        h4.id = 'h4';
+        h4.classList.add('h4');
         document.body.appendChild(h4);
     })
+    sawHigh++;
+}
+
+function clearScores() {
+    // for (let i = 0; i < 5; i++) {
+    //     let rmhs = document.getElementsByClassName("h4");
+    //     document.body.removeChild(rmhs[0]);
+    // }
 }
 
 
