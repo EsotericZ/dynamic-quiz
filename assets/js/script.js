@@ -24,7 +24,7 @@ let redo = 0;
 let timeLeft = document.createElement('h3');
 timeLeft.id = "timeLeft";
 let secondsLeft = 60;
-timeLeft.textContent = secondsLeft.toFixed(1);
+timeLeft.textContent = secondsLeft.toFixed(2);
 let timerInterval;
 let newScore;
 
@@ -60,13 +60,13 @@ function startQuiz() {
 
 function timer() {
     timerInterval = setInterval(function() {
-        secondsLeft -= 0.1;
-        timeLeft.textContent = secondsLeft.toFixed(1);
+        secondsLeft -= 0.01;
+        timeLeft.textContent = secondsLeft.toFixed(2);
 
         if (secondsLeft === 0) {
             clearInterval(timerInterval);
         }
-    }, 100);
+    }, 10);
 }
 
 function quiz() {
@@ -111,7 +111,7 @@ function chooseAnswer(chosen) {
     if (correct !== 'true') {
         console.log('false!')
         secondsLeft -= 10;
-        timeLeft.textContent = secondsLeft.toFixed(1);
+        timeLeft.textContent = secondsLeft.toFixed(2);
 
         // CHANGE CSS STYLING OF BUTTON IF RIGHT/WRONG
 
@@ -176,16 +176,19 @@ function scoreboard() {
 function restart() {
     current = 0;
     secondsLeft = 60;
-    timeLeft.textContent = secondsLeft.toFixed(1);
+    timeLeft.textContent = secondsLeft.toFixed(2);
     redo++
     timer()
     quiz()
 }
 
 function getScores() {
+    console.log('yup')
     que.innerHTML = "Leaderboard!"
     document.getElementById("sbtn").hidden = true;
-    document.getElementById("score").hidden = true;
+    if (document.getElementById("score")) {
+        document.getElementById("score").hidden = true;
+    }
     hs = JSON.parse(localStorage.getItem("highScore") || []);
     hs.sort((a, b) => b.score - a.score);
     let nscore;
@@ -203,10 +206,14 @@ function getScores() {
 }
 
 function clearScores() {
-    // for (let i = 0; i < 5; i++) {
-    //     let rmhs = document.getElementsByClassName("h4");
-    //     document.body.removeChild(rmhs[0]);
-    // }
+    for (let i = 0; i < 5; i++) {
+        if (document.getElementsByClassName("h4")) {
+            let rmhs = document.getElementsByClassName("h4");
+            document.body.removeChild(rmhs[0]);
+        }
+    }
+    sawHigh = 0;
+    return
 }
 
 
