@@ -37,7 +37,8 @@ let userName;
 let sawHigh = 0;
 
 let headq = document.createElement('header');
-headq.innerHTML = 'Ye Ultimate Teletubbies Quiz'
+headq.innerHTML = 'The Ultimate Teletubbies Quiz'
+headq.id = "headq";
 
 // START //
 
@@ -75,8 +76,11 @@ function timer() {
 function quiz() {
     if (redo !== 0) {
         console.log('restart!')
-        document.getElementById("rstart").hidden = true;
-        document.getElementById("score").hidden = true;
+        rstart.id = "hidden";
+        score.id = "hidden";
+        // timeLeft.id = "";
+        // document.getElementById("rstart").hidden = true;
+        // document.getElementById("score").hidden = true;
         document.getElementById("timeLeft").hidden = false;
     }
     if (sawHigh !==0) {
@@ -92,6 +96,7 @@ function quizQuestion(question) {
     question.answer.forEach(answer => {
         let button = document.createElement('button');
         button.innerHTML = answer.ans;
+        button.id = "button";
         button.classList.add("button");
         document.body.appendChild(button);
         if (answer.tf === true) {
@@ -109,15 +114,15 @@ function chooseAnswer(chosen) {
     }
     let selectedButton = chosen.target;
     let correct = selectedButton.dataset.tf;
-    console.log(selectedButton)
+    console.log('sb', selectedButton)
     console.log(correct);
     if (correct !== 'true') {
         console.log('false!')
         secondsLeft -= 10;
         timeLeft.textContent = secondsLeft.toFixed(2);
-
+        console.log('correct', selectedButton.dataset.id)
         // CHANGE CSS STYLING OF BUTTON IF RIGHT/WRONG
-
+    } else {
     }
     if (current < questions.length-1) {
         current++;
@@ -129,8 +134,10 @@ function chooseAnswer(chosen) {
 
 function scores() {   
     if (redo !== 0) {
-        document.getElementById("hsname").hidden = false;
-        document.getElementById("hsbtn").hidden = false;
+        hsname.id = "hsname";
+        hsbtn.id = "hsbtn";
+        // document.getElementById("hsname").hidden = false;
+        // document.getElementById("hsbtn").hidden = false;
     }
     timeScore = timeLeft.innerText;
     window.clearInterval(timerInterval);
@@ -139,6 +146,7 @@ function scores() {
     document.body.appendChild(hsname);
     document.body.appendChild(hsbtn);
     hsbtn.innerHTML = "Submit";
+    hsbtn.id = "hsbtn";
     hsbtn.addEventListener("click", scoreboard);
 }
 
@@ -159,12 +167,16 @@ function scoreboard() {
     userName = hsname.value;
     highScores()
     if (redo !== 0) {
-        document.getElementById("rstart").hidden = false;
-        document.getElementById("score").hidden = false;
+        rstart.id = "rstart";
+        score.id = "score";
+        // document.getElementById("rstart").hidden = false;
+        // document.getElementById("score").hidden = false;
     }
-    document.getElementById("hsname").hidden = true;
-    document.getElementById("hsbtn").hidden = true;
-    document.getElementById("timeLeft").hidden = true;
+    hsname.id = "hidden";
+    hsbtn.id = "hidden";
+    // document.getElementById("hsname").hidden = true;
+    // document.getElementById("hsbtn").hidden = true;
+    // document.getElementById("timeLeft").hidden = true;
     
     que.innerHTML = "You Have Been Put in the Hall of Fame!"
     document.body.appendChild(rstart);
