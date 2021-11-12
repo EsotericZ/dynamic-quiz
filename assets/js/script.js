@@ -9,10 +9,13 @@ sbtn.id = "sbtn";
 
 let que = document.createElement("h1");
 que.id = "que";
+let quen = document.createElement("h1");
+quen.id = "quen";
 let solution = document.createElement("h2");
 let hsname = document.createElement("input");
 hsname.type = "text";
 hsname.id = "hsname";
+hsname.autocomplete = "off";
 
 let hsbtn = document.createElement("button");
 hsbtn.id = "hsbtn";
@@ -47,16 +50,30 @@ document.body.appendChild(quizStart);
 document.body.appendChild(sbtn);
 quizStart.addEventListener("click", startQuiz);
 sbtn.addEventListener("click", getScores);
-
+// quizHome()
 
 
 // FUNCTIONS //
 
+function quizHome() {
+    if (sawHigh !== 0) {
+        for (let i = 0; i < 5; i++) {
+            if (document.getElementsByClassName("h4")) {
+                let rmhs = document.getElementsByClassName("h4");
+                document.body.removeChild(rmhs[0]);
+            }
+        }
+    qhome.id = "hidden";
+    }
+    quizStart.id = "quizStart";
+    sbtn.id = "sbtn";
+    quizStart.addEventListener("click", startQuiz);
+    sbtn.addEventListener("click", getScores);
+}
+
 function startQuiz() {
-    // document.getElementById("quizStart").hidden = true;
     quizStart.id = "hidden";
     sbtn.id = "hidden";
-    // document.getElementById("sbtn").hidden = true;
     current = 0;
     quiz();
     timer();
@@ -78,12 +95,10 @@ function quiz() {
         console.log('restart!')
         rstart.id = "hidden";
         score.id = "hidden";
-        // timeLeft.id = "";
-        // document.getElementById("rstart").hidden = true;
-        // document.getElementById("score").hidden = true;
         document.getElementById("timeLeft").hidden = false;
     }
     if (sawHigh !==0) {
+        qhome.id = "hidden";
         clearScores()
     }
     quizQuestion(questions[current])
@@ -134,16 +149,18 @@ function chooseAnswer(chosen) {
 
 function scores() {   
     if (redo !== 0) {
+        hsname.value = " ";
         hsname.id = "hsname";
         hsbtn.id = "hsbtn";
-        // document.getElementById("hsname").hidden = false;
-        // document.getElementById("hsbtn").hidden = false;
+        quen.id = "quen";
     }
     timeLeft.innerText = "Final Score - "+secondsLeft.toFixed(2);
     timeScore = secondsLeft.toFixed(2);
     window.clearInterval(timerInterval);
 
     que.innerHTML = "Congrats! You Finished the Quiz!"
+    quen.innerHTML = "Please Enter Your Name"
+    document.body.appendChild(quen);
     document.body.appendChild(hsname);
     document.body.appendChild(hsbtn);
     hsbtn.innerHTML = "Submit";
@@ -170,14 +187,12 @@ function scoreboard() {
     if (redo !== 0) {
         rstart.id = "rstart";
         score.id = "score";
-        // document.getElementById("rstart").hidden = false;
-        // document.getElementById("score").hidden = false;
+        quen.id = "quen";
     }
     hsname.id = "hidden";
     hsbtn.id = "hidden";
-    // document.getElementById("hsname").hidden = true;
-    // document.getElementById("hsbtn").hidden = true;
-    // document.getElementById("timeLeft").hidden = true;
+    quen.id = "hidden";
+    timeLeft.id = "hidden";
     
     que.innerHTML = "You Have Been Put in the Hall of Fame!"
     document.body.appendChild(rstart);
@@ -192,18 +207,32 @@ function scoreboard() {
 function restart() {
     current = 0;
     secondsLeft = 60;
+    timeLeft.id = "timeLeft";
     timeLeft.textContent = "Time Remaining: "+secondsLeft.toFixed(2)+" seconds";
     redo++
     timer()
     quiz()
 }
 
+let qhome = document.createElement("button")
+qhome.id = "qhome";
+qhome.innerText = "Home";
+
 function getScores() {
+    if (!document.getElementById("quizStart")) {
+        qhome.id = "qhome";
+    }
     console.log('yup')
     que.innerHTML = "Leaderboard!"
-    document.getElementById("sbtn").hidden = true;
+    sbtn.id = "hidden";
+    if (document.getElementById("quizStart")) {
+        quizStart.id = "hidden";
+    }
+    if (document.getElementById("rstart")) {
+        rstart.id = "hidden";
+    }
     if (document.getElementById("score")) {
-        document.getElementById("score").hidden = true;
+        score.id = "hidden";
     }
     hs = JSON.parse(localStorage.getItem("highScore") || []);
     hs.sort((a, b) => b.score - a.score);
@@ -218,7 +247,16 @@ function getScores() {
         h4.classList.add('h4');
         document.body.appendChild(h4);
     })
+    if (sawHigh === 0) {
+        document.body.appendChild(qhome);
+    } else {
+        document.body.removeChild(qhome);
+        qhome.id = "qhome";
+        document.body.appendChild(qhome);
+    }
+    
     sawHigh++;
+    qhome.addEventListener('click', quizHome)
 }
 
 function clearScores() {

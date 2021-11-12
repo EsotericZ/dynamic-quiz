@@ -20,6 +20,11 @@ body {
   background-color: rgb(80, 6, 80);
 }
 
+h4 {
+  color: yellow;
+  font-size: 20px;
+}
+
 #headq {
   color: #fff;
   font-size: 36px;
@@ -28,7 +33,7 @@ body {
 
 }
 
-#que {
+#que, #quen {
   color: #fff;
 }
 
@@ -38,7 +43,12 @@ body {
   font-style: italic;
 }
 
-#quizStart, #rstart {
+#hsname {
+  font-size: 30px;
+  text-align: center;
+}
+
+#quizStart, #rstart, #qhome {
   background-color: rgb(43, 223, 43);
   border-radius: 15px;
   color: black;
