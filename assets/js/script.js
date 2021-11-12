@@ -65,7 +65,7 @@ function startQuiz() {
 function timer() {
     timerInterval = setInterval(function() {
         secondsLeft-= 0.01;
-        timeLeft.textContent = secondsLeft.toFixed(2);
+        timeLeft.textContent = "Time Remaining: "+secondsLeft.toFixed(2)+" seconds";
         if (secondsLeft.toFixed(0) <= 0) {
             timeLeft.textContent = "0.00";
             clearInterval(timerInterval);
@@ -119,7 +119,7 @@ function chooseAnswer(chosen) {
     if (correct !== 'true') {
         console.log('false!')
         secondsLeft -= 10;
-        timeLeft.textContent = secondsLeft.toFixed(2);
+        timeLeft.textContent = "Time Remaining: "+secondsLeft.toFixed(2)+" seconds";
         console.log('correct', selectedButton.dataset.id)
         // CHANGE CSS STYLING OF BUTTON IF RIGHT/WRONG
     } else {
@@ -139,7 +139,8 @@ function scores() {
         // document.getElementById("hsname").hidden = false;
         // document.getElementById("hsbtn").hidden = false;
     }
-    timeScore = timeLeft.innerText;
+    timeLeft.innerText = "Final Score - "+secondsLeft.toFixed(2);
+    timeScore = secondsLeft.toFixed(2);
     window.clearInterval(timerInterval);
 
     que.innerHTML = "Congrats! You Finished the Quiz!"
@@ -191,7 +192,7 @@ function scoreboard() {
 function restart() {
     current = 0;
     secondsLeft = 60;
-    timeLeft.textContent = secondsLeft.toFixed(2);
+    timeLeft.textContent = "Time Remaining: "+secondsLeft.toFixed(2)+" seconds";
     redo++
     timer()
     quiz()
