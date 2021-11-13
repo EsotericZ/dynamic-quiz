@@ -92,12 +92,12 @@ function timer() {
 
 function quiz() {
     if (redo !== 0) {
-        console.log('restart!')
         rstart.id = "hidden";
         score.id = "hidden";
-        document.getElementById("timeLeft").hidden = false;
+        // document.getElementById("timeLeft").hidden = false;
+        timeLeft.id = "timeLeft"
     }
-    if (sawHigh !==0) {
+    if (sawHigh !==0 && redo !== 0) {
         qhome.id = "hidden";
         clearScores()
     }
@@ -129,14 +129,9 @@ function chooseAnswer(chosen) {
     }
     let selectedButton = chosen.target;
     let correct = selectedButton.dataset.tf;
-    console.log('sb', selectedButton)
-    console.log(correct);
     if (correct !== 'true') {
-        console.log('false!')
         secondsLeft -= 10;
         timeLeft.textContent = "Time Remaining: "+secondsLeft.toFixed(2)+" seconds";
-        console.log('correct', selectedButton.dataset.id)
-        // CHANGE CSS STYLING OF BUTTON IF RIGHT/WRONG
     } else {
     }
     if (current < questions.length-1) {
@@ -160,9 +155,11 @@ function scores() {
 
     que.innerHTML = "Congrats! You Finished the Quiz!"
     quen.innerHTML = "Please Enter Your Name"
-    document.body.appendChild(quen);
-    document.body.appendChild(hsname);
-    document.body.appendChild(hsbtn);
+    if (redo === 0) {
+        document.body.appendChild(quen);
+        document.body.appendChild(hsname);
+        document.body.appendChild(hsbtn);
+    }
     hsbtn.innerHTML = "Submit";
     hsbtn.id = "hsbtn";
     hsbtn.addEventListener("click", scoreboard);
@@ -222,7 +219,6 @@ function getScores() {
     if (!document.getElementById("quizStart")) {
         qhome.id = "qhome";
     }
-    console.log('yup')
     que.innerHTML = "Leaderboard!"
     sbtn.id = "hidden";
     if (document.getElementById("quizStart")) {
@@ -275,24 +271,33 @@ function clearScores() {
 // QUESTIONS //
 
 let questions = [
-    {question: "This is the first question",
-    answer: [{ans: "answer 1-01", tf: true}, 
-        {ans: "answer 1-02", tf: false}, 
-        {ans: "answer 1-03", tf: false}, 
-        {ans: "answer 1-04", tf: false}]},
-    {question: "This is the second question",
-    answer: [{ans: "answer 2-01", tf: false}, 
-        {ans: "answer 2-02", tf: false}, 
-        {ans: "answer 2-03", tf: false}, 
-        {ans: "answer 2-04", tf: false}]},
-    {question: "This is the third question",
-    answer: [{ans: "answer 3-01", tf: true}, 
-        {ans: "answer 3-02", tf: false}, 
-        {ans: "answer 3-03", tf: true}, 
-        {ans: "answer 3-04", tf: false}]},
-    {question: "This is the fourth question",
-    answer: [{ans: "answer 4-01", tf: true}, 
-        {ans: "answer 4-02", tf: false}, 
-        {ans: "answer 4-03", tf: true}, 
-        {ans: "answer 4-04", tf: false}]}
+    {question: "How many Teletubbies are there?",
+    answer: [{ans: "Two", tf: false}, 
+        {ans: "Four", tf: true}, 
+        {ans: "Six", tf: false}, 
+        {ans: "Too Many. Stop.", tf: false}]},
+    {question: "Which of these is NOT a Teletubbie?",
+    answer: [{ans: "Laa-Laa", tf: false}, 
+        {ans: "Noo-Noo", tf: true}, 
+        {ans: "Tinky-Winky", tf: false}, 
+        {ans: "Po", tf: false}]},
+    {question: "There is a pink Teletubbie.",
+    answer: [{ans: "True", tf: false}, 
+        {ans: "False", tf: true}]},
+    {question: "What is the name of the Teletubbies spin-off?",
+    answer: [{ans: "Family Guy", tf: false}, 
+        {ans: "Tiddlywinks", tf: false}, 
+        {ans: "Tub Tub Nightmare", tf: false}, 
+        {ans: "Tiddlytubbies", tf: true}]},
+    {question: "The show was banned in several countries cause the lions were too scary",
+    answer: [{ans: "True", tf: true}, 
+        {ans: "False", tf: false}]},
+    {question: "How long have the Teletubbies been on air?",
+    answer: [{ans: "15 years", tf: false}, 
+        {ans: "24 years", tf: true}, 
+        {ans: "The started on The Andy Griffith Show", tf: false}, 
+        {ans: "So long I question everything in my life", tf: false}]},
+    {question: "You love the Teletubbies",
+    answer: [{ans: "OMG Yes", tf: true}, 
+        {ans: "Love isn't a strong enough word", tf: true}]}
 ];
